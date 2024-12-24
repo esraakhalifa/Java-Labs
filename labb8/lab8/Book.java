@@ -3,12 +3,12 @@ package lab8;
 class Book extends LibraryItem
 {
     String ISBN;
-    Book(String Title, Integer Id, String Category, String ISSN, String Publisher, Language language)
+    Book(String Title, Integer Id, String Category, String ISBN, String Publisher, Language language)
     {
         this.Title = Title;
         this.Id = Id;
         this.Category = Category;
-        this.ISBN = ISSN;
+        this.ISBN = ISBN;
         this.Publisher = Publisher;
         this.language = language;
     }
@@ -16,8 +16,11 @@ class Book extends LibraryItem
     public String getItemDetails()
     {
         String itemDetails;
-        itemDetails = "Title: " + this.getItemTitle() + ", Category: " + this.getItemCategory() + ", ISBN: " + this.getISBN() + 
-        ", Publisher: " + this.getItemPublisher() + ", Language: " + this.getItemLanguage();
+        itemDetails = "Title: " + this.getItemTitle() + 
+        ", Category: " + this.getItemCategory() + 
+        ", ISBN: " + this.getISBN() + 
+        ", Publisher: " + this.getItemPublisher() + 
+        ", Language: " + this.getItemLanguage();
         return itemDetails;
     }
     @Override

@@ -16,8 +16,11 @@ class Magazine extends LibraryItem
     public String getItemDetails()
     {
         String itemDetails;
-        itemDetails = "Title: " + this.getItemTitle() + ", Category: " + this.getItemCategory() + ", ISSN: " + this.getISSN() +
-        ", Publisher: " + this.getItemPublisher() + ", Language: " + this.getItemLanguage();
+        itemDetails = "Title: " + this.getItemTitle() + 
+        ", Category: " + this.getItemCategory() + 
+        ", ISSN: " + this.getISSN() +
+        ", Publisher: " + this.getItemPublisher() + 
+        ", Language: " + this.getItemLanguage();
         return itemDetails;
     }
     @Override
