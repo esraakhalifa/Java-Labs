@@ -85,5 +85,9 @@ class Book extends LibraryItem
     {
         this.status = status;
     }
+    public void setItemISBN(String ISBN)
+    {
+        this.ISBN = ISBN;
+    }
 
 }

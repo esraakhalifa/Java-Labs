@@ -84,5 +84,9 @@ class Magazine extends LibraryItem
     {
         this.status = status;
     }
+    public void setItemISSN(String ISSN)
+    {
+        this.ISSN = ISSN;
+    }
 
 }

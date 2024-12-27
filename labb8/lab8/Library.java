@@ -169,6 +169,22 @@ public class Library <T extends LibraryItem>{
         ItemToBeUpdated.setItemStatus(status);
 
     }
+    public void UpdateBookISBNById(int BookId, String ISBN) throws ItemNotFoundException
+    {
+        //if(cho)
+        LibraryItem ItemToBeUpdated = getItem(BookId);
+        Book BookToBeUpdated = (Book) ItemToBeUpdated;
+        BookToBeUpdated.setItemISBN(ISBN);
+
+    }
+    public void UpdateMagazineISSNById(int MagazineId, String ISSN) throws ItemNotFoundException
+    {
+        //if(cho)
+        LibraryItem ItemToBeUpdated = getItem(MagazineId);
+        Magazine MagazineToBeUpdated = (Magazine) ItemToBeUpdated;
+        MagazineToBeUpdated.setItemISSN(ISSN);
+
+    }
     public void addItemToClientBorrowedItems(int ClientId, int ItemId) throws ItemNotFoundException
     {
         LibraryItem borrowedItem = getItem(ItemId);
