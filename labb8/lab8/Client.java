@@ -25,11 +25,11 @@ public class Client
         String clientDetails = "Client ID: " + this.getId() + ", Client Name: " + this.getName() + ", Client Email: " + this.getEmail();
         return clientDetails;
     } 
-    public void borrowItem(LibraryItem libraryItem)
+    public void ClientBorrowItem(LibraryItem libraryItem)
     {
         borrowedItems.add(libraryItem);
     } 
-    public void ReturnItem(LibraryItem libraryItem)
+    public void ClientReturnItem(LibraryItem libraryItem)
     {
         borrowedItems.remove(libraryItem);
     }

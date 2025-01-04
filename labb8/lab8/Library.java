@@ -73,7 +73,7 @@ public class Library <T extends LibraryItem>{
     }
     public boolean ItemIsFound(int Id)
     {
-        //LibraryItem item = null;
+
         for (LibraryItem item : libraryItems)
         {
             if (item.Id == Id) return true;
@@ -89,89 +89,86 @@ public class Library <T extends LibraryItem>{
         }
         return false;
     }
-    public void BorrowOrReturnItem(int ItemId)
+    public void borrowItem(int ItemId) throws ItemIsBorrowedException
     {
+
         for (LibraryItem item : libraryItems)
         {
             if (item.Id == ItemId)
             {
-                item.changeItemSatus();
+                if(item.status == Status.AVAILBLE) item.changeItemSatus();
+                else 
+                {
+                    throw new ItemIsBorrowedException("Item is already borrowed.");
+                }
             }
         }
     }
-    //public void UpdateItem
-   /* public LibraryItem getBorrowedItem(int ItemId)
+    public void returnItem(int ItemId)
     {
-        LibraryItem borrowedItem = null;
+        
         for (LibraryItem item : libraryItems)
         {
             if (item.Id == ItemId)
             {
-                borrowedItem = item;
+                if(item.status == Status.BORROWED) item.changeItemSatus();
+                else return;
             }
         }
-        return borrowedItem;
-    }*/
-   /**
-    *String Title; @DONEE
-    Integer Id;
-    String Category; @DONEE
-    String Publisher; @DONEE
-    Language language;  @DONEE
-    Status status;  @DONEE
-    */
+    }
+
     public void UpdateItemTitleById(int ItemId, String Title) throws ItemNotFoundException
     {
-        //if(cho)
+
         LibraryItem ItemToBeUpdated = getItem(ItemId);
         ItemToBeUpdated.setItemTitle(Title);
 
     }
     public void UpdateItemCategoryById(int ItemId, String Category) throws ItemNotFoundException
     {
-        //if(cho)
+
         LibraryItem ItemToBeUpdated = getItem(ItemId);
         ItemToBeUpdated.setItemCategory(Category);
 
     }
     public void UpdateItemPublisherById(int ItemId, String Publisher) throws ItemNotFoundException
     {
-        //if(cho)
+
         LibraryItem ItemToBeUpdated = getItem(ItemId);
         ItemToBeUpdated.setItemPublisher(Publisher);
 
     }
     public void UpdateItemLanguageById(int ItemId, Language language) throws ItemNotFoundException
     {
-        //if(cho)
+
         LibraryItem ItemToBeUpdated = getItem(ItemId);
         ItemToBeUpdated.setItemLanguage(language);
 
     }
     public void UpdateClientNameById(int ClientId, String name) throws ClientNotFoundException
     {
-        //if(cho)
+
         Client ClientToBeUpdated = getClient(ClientId);
         ClientToBeUpdated.setName(name);
 
     }
     public void UpdateClientEmailById(int ClientId, String Email) throws ClientNotFoundException
     {
-        //if(cho)
+
         Client ClientToBeUpdated = getClient(ClientId);
         ClientToBeUpdated.setEmail(Email);
 
     }
     public void UpdateItemStatusById(int ItemId, Status status) throws ItemNotFoundException
     {
-        //if(cho)
+
         LibraryItem ItemToBeUpdated = getItem(ItemId);
         ItemToBeUpdated.setItemStatus(status);
 
     }
     public void UpdateBookISBNById(int BookId, String ISBN) throws ItemNotFoundException
     {
-        //if(cho)
+
         LibraryItem ItemToBeUpdated = getItem(BookId);
         Book BookToBeUpdated = (Book) ItemToBeUpdated;
         BookToBeUpdated.setItemISBN(ISBN);
@@ -179,33 +176,45 @@ public class Library <T extends LibraryItem>{
     }
     public void UpdateMagazineISSNById(int MagazineId, String ISSN) throws ItemNotFoundException
     {
-        //if(cho)
+
         LibraryItem ItemToBeUpdated = getItem(MagazineId);
         Magazine MagazineToBeUpdated = (Magazine) ItemToBeUpdated;
         MagazineToBeUpdated.setItemISSN(ISSN);
 
     }
-    public void addItemToClientBorrowedItems(int ClientId, int ItemId) throws ItemNotFoundException
+    public void addItemToClientBorrowedItems(int ClientId, int ItemId) throws ItemNotFoundException, ClientNotFoundException
     {
         LibraryItem borrowedItem = getItem(ItemId);
-        //if (ChosenItem == null) throw new ItemNotFoundException("Item with ID " + Id + " not found.");
         for (Client client : clients)
         {
             if (client.Id == ClientId)
             {
-                client.borrowItem(borrowedItem);
+                client.ClientBorrowItem(borrowedItem);
             } 
+            else throw new ClientNotFoundException("Client is not found.");
         }
+    }
+    public boolean IsBorrowedByClient(int ClientId, int ItemId) throws ClientNotFoundException
+    {
+        Client client = getClient(ClientId);
+        LibraryItem TargetItem  = client.borrowedItems.stream().
+        filter(borrowedItem -> borrowedItem.Id == ItemId)
+        .findFirst().orElse(null);
+        if (TargetItem != null)
+        {
+            return true;
+        }
+        return false;
     }
     public void removeItemFromClientBorrowedItems(int ClientId, int ItemId) throws ItemNotFoundException
     {
         LibraryItem borrowedItem = getItem(ItemId);
-        //if (ChosenItem == null) throw new ItemNotFoundException("Item with ID " + Id + " not found.");
+
         for (Client client : clients)
         {
             if (client.Id == ClientId)
             {
-                client.ReturnItem(borrowedItem);
+                client.ClientReturnItem(borrowedItem);
             } 
         }
     }

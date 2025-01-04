@@ -243,9 +243,7 @@ public class Menu {
                 case 1:
                     System.out.print("Enter New Book Title: ");
                     String NewTitle = scanner.nextLine();
-                    /*if (!Pattern.matches("^[a-zA-Z ]+$", NewName)) {
-                        throw new IllegalArgumentException("Invalid name format. Only letters and spaces are allowed.");
-                    }*/
+
                     library.UpdateItemTitleById(id,NewTitle);
                     break;
                 case 2:
@@ -263,7 +261,6 @@ public class Menu {
                         throw new IllegalArgumentException("Invalid ISBN format.");
                     }
                     library.UpdateBookISBNById(id,NewISBN);
-                    //library.Update(id,NewISBN);
                     break;
                 case 4:
                     System.out.print("Enter New Book Publisher: ");
@@ -274,15 +271,11 @@ public class Menu {
                     System.out.print("Enter New Book Language: ");
                     String NewLanguage = scanner.nextLine();
                     Language validLanguageInput = Language.valueOf(NewLanguage);
-                    //if(!validateLanguageInput) throw new IllegalArgumentException("Invalid language input. Enter EN or AR, please.");
                     library.UpdateItemLanguageById(id,validLanguageInput);
                     break;
                 case 6:
                     System.out.print("Enter New Book Status: ");
                     String NewStatus = scanner.nextLine();
-                    /*if (!Pattern.matches("^[a-zA-Z ]+$", NewCategory)) {
-                        throw new IllegalArgumentException("Invalid category name format. Only letters and spaces are allowed.");
-                    }*/
                     Status valideStatusInput = Status.valueOf(NewStatus);
                     library.UpdateItemStatusById(id,valideStatusInput);
                     break;
@@ -307,7 +300,6 @@ public class Menu {
     private void updateMagazine()
     {
         try{
-            //System.out.println("What do you want to update?")
             System.out.print("Enter Item ID: ");
             int id = scanner.nextInt();
             scanner.nextLine();
@@ -329,9 +321,6 @@ public class Menu {
                 case 1:
                     System.out.print("Enter New Magazine Title: ");
                     String NewTitle = scanner.nextLine();
-                    /*if (!Pattern.matches("^[a-zA-Z ]+$", NewName)) {
-                        throw new IllegalArgumentException("Invalid name format. Only letters and spaces are allowed.");
-                    }*/
                     library.UpdateItemTitleById(id,NewTitle);
                     break;
                 case 2:
@@ -349,7 +338,6 @@ public class Menu {
                         throw new IllegalArgumentException("Invalid ISBN format.");
                     }
                     library.UpdateMagazineISSNById(id,NewISSN);
-                    //library.Update(id,NewISBN);
                     break;
                 case 4:
                     System.out.print("Enter New Magazine Publisher: ");
@@ -360,15 +348,11 @@ public class Menu {
                     System.out.print("Enter New Magazine Language: ");
                     String NewLanguage = scanner.nextLine();
                     Language validLanguageInput = Language.valueOf(NewLanguage);
-                    //if(!validateLanguageInput) throw new IllegalArgumentException("Invalid language input. Enter EN or AR, please.");
                     library.UpdateItemLanguageById(id,validLanguageInput);
                     break;
                 case 6:
                     System.out.print("Enter New Magazine Status: ");
                     String NewStatus = scanner.nextLine();
-                    /*if (!Pattern.matches("^[a-zA-Z ]+$", NewCategory)) {
-                        throw new IllegalArgumentException("Invalid category name format. Only letters and spaces are allowed.");
-                    }*/
                     Status valideStatusInput = Status.valueOf(NewStatus);
                     library.UpdateItemStatusById(id,valideStatusInput);
                     break;
@@ -393,17 +377,10 @@ public class Menu {
     private void updateItem() throws IllegalArgumentException, ItemNotFoundException
     {
 
-            System.out.print("What do you want to update?");
-            //int id = scanner.nextInt();
+            System.out.println("What do you want to update?");
             System.out.println("1) Book");
             System.out.println("2) Magazine");
             System.out.print("Enter here:");
-            scanner.nextLine();
-            /*if (!library.ClientIsFound(id)) {
-                throw new ClientNotFoundException("Client ID doesn't exist. Please enter a correct ID.");
-            }
-            System.out.println("Choose an option:");*/
-
             int choice = scanner.nextInt();
             scanner.nextLine();
             switch(choice)
@@ -469,7 +446,7 @@ public class Menu {
         System.out.println(client.getClientDetails());
     }
 
-    private void borrowItem() {
+    private void borrowItem() throws ItemIsBorrowedException, ClientNotFoundException{
         try {
             System.out.print("Enter Client ID: ");
             int clientId = scanner.nextInt();
@@ -478,15 +455,16 @@ public class Menu {
             int itemId = scanner.nextInt();
 
             library.addItemToClientBorrowedItems(clientId, itemId);
-            library.BorrowOrReturnItem(itemId);
+            library.borrowItem(itemId);
             System.out.println("Item borrowed successfully!");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
     }
 
-    private void returnItem() {
+    private void returnItem() throws NotBorrowedByClientException{
         try {
             System.out.print("Enter Client ID: ");
             int clientId = scanner.nextInt();
@@ -494,13 +472,15 @@ public class Menu {
             System.out.print("Enter Item ID to Return: ");
             int itemId = scanner.nextInt();
 
+            if (!library.IsBorrowedByClient(clientId, itemId)) throw new NotBorrowedByClientException("You didn't borrow this item.");
             library.removeItemFromClientBorrowedItems(clientId, itemId);
-            library.BorrowOrReturnItem(itemId);
+            library.returnItem(itemId);
             System.out.println("Item returned successfully!");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
     }
 }
 
